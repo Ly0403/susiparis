@@ -68,19 +68,7 @@ namespace SuSiparis
             }
             public async Task configSendGridasync(IdentityMessage message)
             {
-                //var mymessage = new SendGridMessage()
-                //{
-                //    From = new EmailAddress("yucel5585@gmail.com", "Web Admin"),
-                //    Subject = message.Subject,
-                //    PlainTextContent = message.Body
-                //};
-                //mymessage.AddTo(new EmailAddress(message.Destination,"customer"));
-                //var transportWeb = new SendGridClient("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");
-                //if (transportWeb != null)
-                //{
-                //    var response=await transportWeb.SendEmailAsync(mymessage);
-                //}
-                MailAddress from = new MailAddress("damacana2016training@outlook.com");
+                MailAddress from = new MailAddress("");
                 MailAddress to = new MailAddress(message.Destination);
                 MailMessage mailMessage = new MailMessage(from,to);
                 mailMessage.Subject = message.Subject;
@@ -95,7 +83,7 @@ namespace SuSiparis
                         client.Port = 587;
                         client.UseDefaultCredentials = false;
                         client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                        client.Credentials = new NetworkCredential("damacana2016training@outlook.com", "Damacana1234-");
+                        client.Credentials = new NetworkCredential("", "");
 
                         await client.SendMailAsync(mailMessage);
                     }
