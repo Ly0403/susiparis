@@ -79,8 +79,8 @@ namespace SuSiparis
                     using (var client = new SmtpClient())
                     {
                         client.EnableSsl = true;
-                        client.Host = "smtp-mail.outlook.com";
-                        client.Port = 587;
+                        client.Host = "";
+                        client.Port = "";
                         client.UseDefaultCredentials = false;
                         client.DeliveryMethod = SmtpDeliveryMethod.Network;
                         client.Credentials = new NetworkCredential("", "");
