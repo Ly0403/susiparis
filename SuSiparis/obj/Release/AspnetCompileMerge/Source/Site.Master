@@ -1,0 +1,140 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="SuSiparis.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="en" style="height:100%;margin:0">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - Su Sipariş</title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+
+    <webopt:bundlereference runat="server" path="~/" />
+    <link href="Images/PageIcon.png" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/Site.css" />
+</head>
+<body  class="bodycontent">
+    <form runat="server" >
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                <%--Framework Scripts--%>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="respond" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Site Scripts--%>
+            </Scripts>
+        </asp:ScriptManager>
+        <asp:UpdateProgress ID="LoadingProcess" runat="server">
+            <ProgressTemplate>
+            <div style="position: fixed; text-align: center; height: 100%; width: 100%; top: 0; right: 0; left: 0; z-index: 9999999; background-color: #000000; opacity: 0.7;">
+                <span style="border-width: 0px; position: fixed; padding: 50px; background-color: #FFFFFF; font-size: 36px; left: 20%; top: 30%;border-radius:25px;">
+                    <img src="Images/loading.gif" width="100" />
+                </span>
+            </div>
+        </ProgressTemplate>
+        </asp:UpdateProgress>
+        <div style="float:right;margin-bottom:20px;">
+            <asp:LoginView ID="LoginView1" runat="server">
+                    <AnonymousTemplate>
+                        <table style="margin:10px">
+                            <tr>
+                                <td>
+                                    <img src="Images/LoginUser.png" width="40"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="margin-left:10px;font-size:10px;color:red;">Merhaba</td>                                
+                            </tr>
+                            <tr>
+                                <td style="margin-left:10px;font-size:10px;color:red;">Misafir Kullanıcı</td>
+                            </tr>
+                        </table>                      
+                    </AnonymousTemplate>
+                    <LoggedInTemplate>
+                        <asp:FormView ID="FormView1" runat="server" ItemType="SuSiparis.Models.IdentityModels+ApplicationUser" DataKeyNames="UserName" SelectMethod="FormView1_GetItem">
+                           <ItemTemplate>
+                               <img src="../Images/<%#:Item.UserImg%>" width="40" style="margin-left:30px;border-radius:100px;"/>
+                           </ItemTemplate>
+                        </asp:FormView>
+                        <a href="/Siparis/Kullanici.aspx">
+                            <span style="margin-left:30px;font-size:10px;color:red;">
+                            Merhaba(<%:HttpContext.Current.User.Identity.Name %>)
+                        </span> 
+                        </a>
+                        <asp:Button ID="LogoutButton" runat="server" Text="Çıkış" OnClick="Button1_Click" CssClass="LogoutButton" />
+                    </LoggedInTemplate>
+                </asp:LoginView>
+        </div>
+        <div  class="headerAnaSayfa">
+        <h2><strong>Damacana</strong>Sipariş<sup style="font-size:large;">&copy;</sup></h2>
+    </div>
+    <div class="linkMenu">
+        <table style="width:100%;">
+            <tr>
+                <td>
+                    <a href="/">
+                        <i class="glyphicon glyphicon-home"></i>
+                        <p style="font-size:10px;color:yellow">Ana Sayfa</p>
+                    </a>
+                    
+                </td>
+                <td runat="server" id="Giristd">
+                    <a href="/Login.aspx">
+                        <i class="glyphicon glyphicon-log-in"></i>
+                        <p style="font-size:10px;color:yellow">Kayıt/Giriş</p>
+                    </a>
+                </td>
+                <td runat="server" id="Siparistd" visible="false">
+                    <a href="/Siparis/Siparislerim.aspx">
+                        <i class="glyphicon glyphicon-phone"></i>
+                        <p style="font-size:10px;color:yellow">Siparişlerim</p>
+                    </a>
+                </td>
+                <td runat="server" id="Bayitd" visible="false">
+                    <a href="/Bayi/BayiSayfa.aspx">
+                        <i class="glyphicon glyphicon-check"></i>
+                        <p style="font-size:10px;color:yellow">Bayi</p>
+                    </a>
+                    
+                </td>
+                <td>
+                    <a href="/OnlineSiparis.aspx">
+                        <i class="glyphicon glyphicon-phone-alt"></i>
+                        <p style="font-size:10px;color:yellow">Online Sipariş</p>
+                    </a>
+                </td>
+                <td runat="server" id="Kullanicitd" visible="false">
+                    <a href="/Siparis/Kullanici.aspx">
+                        <i class="glyphicon glyphicon-user"></i>
+                        <p style="font-size:10px;color:yellow">Profil</p>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+        <div>
+            <asp:ContentPlaceHolder ID="MainContent" runat="server" >
+            </asp:ContentPlaceHolder>           
+        </div>
+        <div style="position:fixed;bottom:0;width:100%;height:30px;background-color:cornsilk;text-align:center;font-size:10px;color:black;">
+            <strong>Damanaca</strong><span>Sipariş</span>
+            <p>&copy;<%: DateTime.Now.ToString("yyyy") %></p>
+        </div>
+    </form>    
+</body>
+</html>

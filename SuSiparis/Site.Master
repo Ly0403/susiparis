@@ -1,0 +1,120 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="SuSiparis.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - Su Sipariş</title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+
+    <webopt:BundleReference runat="server" Path="~/" />
+    <link href="Images/PageIcon.png" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/Site.css" />
+</head>
+<body class="bodycontent">
+    <form runat="server">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                <%--Framework Scripts--%>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="respond" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Site Scripts--%>
+            </Scripts>
+        </asp:ScriptManager>
+        <nav class="navbar navbar-expand-lg bg-body">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">
+                    <h4><strong>SU</strong>Sipariş<sup style="font-size: large;">&copy;</sup></h4>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/">Ana Sayfa</a>
+                        </li>
+                        <li class="nav-item" runat="server" id="loginLink">
+                            <a class="nav-link" href="/Login.aspx">Giriş/Kaydol</a>
+                        </li>
+                        <li class="nav-item" runat="server" id="siparisLink" visible="false">
+                            <a class="nav-link" href="/Siparis/Siparislerim.aspx">Siparişlerim</a>
+                        </li>
+                        <li class="nav-item" runat="server" id="bayiLink" visible="false">
+                            <a class="nav-link" href="/Bayi/BayiSayfa.aspx">Bayi</a>
+                        </li>
+                        <li class="nav-item" runat="server" id="bayiurunEkleLink" visible="false">
+                            <a class="nav-link" href="/Bayi/BayiAddProduct.aspx">Bayi Ürün Girişi</a>
+                        </li>
+                        <li class="nav-item" runat="server" id="siparisVermeLink">
+                            <a class="nav-link" href="/OnlineSiparis.aspx">Sipariş Ver</a>
+                        </li>
+                        <li class="nav-item" runat="server" id="userProfileLink" visible="false">
+                            <a class="nav-link" href="/UserManager/Kullanici.aspx">Profilim</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="float-end">
+                    <asp:LoginView ID="LoginView1" runat="server">
+                        <AnonymousTemplate>
+                            <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    <img src="Images/LoginUser.png" style="border-radius: 100px; width: 30px" />
+                                </li>
+                                <li class="list-inline-item errorMessage">Merhaba
+                                </li>
+                                <li class="list-inline-item errorMessage">Misafir
+                                </li>
+                            </ul>
+                        </AnonymousTemplate>
+                        <LoggedInTemplate>
+                            <ul class="list-inline">
+                                <asp:FormView ID="FormView1" runat="server" ItemType="SuSiparis.Models.IdentityModels+ApplicationUser" DataKeyNames="UserName" SelectMethod="FormView1_GetItem">
+                                    <ItemTemplate>
+                                        <li class="list-inline-item">
+                                            <img src="../UserManager/photo/<%#:Item.UserImg%>" style="border-radius: 100px; width: 30px" />
+                                        </li>
+                                        <li class="list-inline-item errorMessage"><a href="/UserManager/Kullanici.aspx">
+                                            <span>Merhaba(<%:HttpContext.Current.User.Identity.Name %>)
+                                            </span></a></li>
+                                        <li class="list-inline-item errorMessage">
+                                            <asp:Button ID="Button1" runat="server" Text="Çıkış" OnClick="Button1_Click" CssClass="LogoutButton" /></li>
+
+                                    </ItemTemplate>
+                                </asp:FormView>
+                            </ul>
+                        </LoggedInTemplate>
+                    </asp:LoginView>
+                </div>
+            </div>
+        </nav>
+
+        <div>
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+        <div style="position: fixed; bottom: 0; width: 100%; height: 30px; background-color: cornsilk; text-align: center; font-size: 10px; color: black;">
+            <strong>Su</strong><span>Sipariş</span>
+            <p>&copy;<%: DateTime.Now.ToString("yyyy") %></p>
+        </div>
+    </form>
+</body>
+</html>
